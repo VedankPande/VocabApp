@@ -1,0 +1,14 @@
+.buttons{
+    margin: 0 auto;
+}
+.btn{
+    width: 50%;
+    text-align: center;
+}
+#word,#meaning{
+    margin-bottom: 5%;
+}
+.bottom-buttons{
+    margin-left: 5%;
+    margin-bottom: 5%;
+}

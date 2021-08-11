@@ -1,0 +1,94 @@
+{% extends 'base.html' %} {% block content%}
+
+<!-- <div class="main-container">
+  <div class="heading-word">
+    <h2 id="word" style="color: white;">Word:{{record.word}}</h2>
+  </div>
+  <div class="content">
+    <h3 id="meaning" style="color: white;">Meaning: {{record.meaning}}</h3>
+  </div>
+  <div class="bottom-buttons">
+    <a href="{% if id != 262%}{% url 'words' record.next.id %}{% endif %}">NEXT</a>
+    <a href="{% if id != 1%}{% url 'words' record.prev.id %}{% endif %}">PREV</a>
+</div>
+</div>-->
+<div class = "frame">
+  <div class="card text-white bg-dark mb-3" style="max-width: 20rem">
+    <div class="card-header">Card Pack 1</div>
+      <div class="card-body">
+        <h5 class="card-title" id="bs-word">Word: {{record.word}}</h5>
+        <p class="card-title" id="bs-meaning">{{record.meaning}}</p>
+      </div>
+      <div class = "buttons">
+        <button class="btn btn-light" id="prev">Prev</button>
+        <button class="btn btn-light" id="show">Show Meaning</button>
+        <button class="btn btn-light" id="rand">Random</button>
+        <button class="btn btn-light" id="next">Next</button>
+      </div>
+    
+  </div>
+</div>
+
+{% endblock %} {% block javascript %}
+<script type="text/javascript">
+  //TODO: Make this part DRY
+  var id = parseInt("{{record.id}}");
+  $(document).ready(function () {
+    //hide meaning
+    $("#meaning").hide();
+
+    //next button
+    $(document).on("click", "#next", function () {
+      var elem_id = $(this).attr("id");
+      $.ajax({
+        url: "{% url 'next' %}",
+        data: { id: id },
+        dataType: "json",
+        success: function (data) {
+          console.log("success");
+          console.log(data);
+          $("#bs-word").text("Word: " + data["word"]);
+          $("#bs-meaning").text("Meaning: " + data["meaning"]);
+          id = data["id"];
+        },
+      });
+    });
+
+    //prev button
+    $(document).on("click", "#prev", function () {
+      $.ajax({
+        url: "{% url 'prev' %}",
+        data: { id: id },
+        dataType: "json",
+        success: function (data) {
+          console.log("success");
+          console.log(data);
+          $("#bs-word").text("Word: " + data["word"]);
+          $("#bs-meaning").text("Meaning: " + data["meaning"]);
+          id = data["id"];
+        },
+      });
+    });
+
+    //random button
+    $(document).on("click", "#rand", function () {
+      $.ajax({
+        url: "{% url 'random' %}",
+        dataType: "json",
+        success: function (data) {
+          console.log("success");
+          console.log(data);
+          $("#bs-word").text("Word: " + data["word"]);
+          $("#bs-meaning").text("Meaning: " + data["meaning"]);
+          id = data["id"];
+        },
+      });
+    });
+
+    //toggle hide
+    $("#show").click(function () {
+      $("#bs-meaning").toggle();
+    });
+  });
+</script>
+{% endblock %}
