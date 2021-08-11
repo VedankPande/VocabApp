@@ -1,0 +1,3 @@
+# Make different word packs
+# sort out design
+# add antonyms/sentences/synonyms
